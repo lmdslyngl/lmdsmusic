@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <link rel="stylesheet" href="player-mobile.css" media="screen and (max-width: 479px)">
+    <link rel="stylesheet" href="player-desktop.css" media="screen and (min-width: 480px)">
+    <title>${title}</title>
+    <style>
+      .profile-bg {
+        background-image: url("${profile_background}");
+      }
+    </style>
+  </head>
+  <body>
+
+    <div class="jumbotron profile-bg">
+      <div class="profile">
+        <img src="${profile_thumbnail}">
+        <h1>${username}</h1>
+        <p>${description}</p>
+      </div>
+    </div>
+    <div class="content">
+      <div id="app">
+        <player-list
+          v-bind:musicinfo-urls="pagedMusics"
+          v-on:started-playing-callback="startedPlayingCallback">
+        </player-list>
+        <pager
+          v-bind:musics="musics"
+          musics-per-page="10"
+          v-on:page-changed="onPageChanged">
+        </pager>
+      </div>
+    </div>
+    <div class="footer">
+      ${copyright}
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="wave.js"></script>
+    <script>
+      var vm = new Vue({
+        el: "#app",
+        data: {
+          musics: [],
+          pagedMusics: []
+        },
+        mounted: function() {
+          this.loadMusics()
+            .then((musics) => {
+              let sortedMusics = musics.slice();
+              sortedMusics.sort((a, b) => {
+                return b[2] - a[2];
+              });
+              this.musics = sortedMusics.map(x => `/stream/${x[0]}/musicinfo.json`);
+            }).catch((response) => {
+              console.log(response);
+            });
+        },
+        methods: {
+          loadMusics: function() {
+            return new Promise((resolve, reject) => {
+              let xhr = new XMLHttpRequest();
+              xhr.open("GET", "/stream/musiclist.json");
+              xhr.addEventListener("loadend", (event) => {
+                if( xhr.status === 200 ) {
+                  resolve(JSON.parse(xhr.response));
+                } else {
+                  reject(xhr.response);
+                }
+              });
+              xhr.send(null);
+            });
+          },
+          onPageChanged: function(currentPage, pagedMusics) {
+            this.pagedMusics = pagedMusics;
+            scrollTo(0, 0);
+          },
+          startedPlayingCallback: function(id, title) { }
+        }
+      });
+    </script>
+
+  </body>
+</html>

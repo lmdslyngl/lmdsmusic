@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <link rel="stylesheet" href="player-mobile.css" media="screen and (max-width: 479px)">
+    <link rel="stylesheet" href="player-desktop.css" media="screen and (min-width: 480px)">
+    <title>lmdsmusics</title>
+    <style>
+      .profile-bg {
+        background-image: url("${profile_background}");
+      }
+    </style>
+  </head>
+  <body>
+
+    <div class="jumbotron profile-bg">
+      <div class="profile">
+        <img src="profile-thumbnail.png">
+        <h1>らむだん（@dn_lmds_gl）</h1>
+        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque a eleifend augue,</p>
+      </div>
+    </div>
+    <div class="content">
+      <div id="app">
+        <div class="music-description">
+          <h1>{{ musicinfo["title"] }}</h1>
+          <p class="artist">{{ musicinfo["artist"] }}</p>
+        </div>
+        <player-list
+          v-bind:musicinfo-urls="musics"
+          v-on:musicinfo-loaded="musicinfoLoaded"
+          v-on:started-playing-callback="startedPlayingCallback">
+        </player-list>
+      </div>
+    </div>
+    <div class="footer">
+      らむだん(@dn_lmds_gl) 2020, All rights reserved.
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="wave.js"></script>
+    <script>
+      var vm = new Vue({
+        el: "#app",
+        data: {
+          musics: [],
+          musicinfo: {}
+        },
+        mounted: function() {
+          let queryParams = this.getQueryParams();
+          if( "id" in queryParams ) {
+            this.musics = [`/stream/${queryParams["id"]}/musicinfo.json`];
+          }
+        },
+        methods: {
+          musicinfoLoaded: function(index, musicinfo) {
+            let musicinfoCopied = Object.assign(musicinfo);
+            if( musicinfo["artist"].length <= 0 ) {
+              musicinfoCopied["artist"] = "(アーティスト名未指定)";
+            }
+            this.musicinfo = musicinfoCopied;
+          },
+          getQueryParams: function() {
+            let params = {};
+            let paramsSplitedByAnd = location.search.replace("?", "").split("&");
+            for( let i = 0; i < paramsSplitedByAnd.length; i++ ) {
+              let keyAndValue = paramsSplitedByAnd[i].split("=");
+              params[keyAndValue[0]] = keyAndValue[1];
+            }
+            return params;
+          },
+          startedPlayingCallback: function(id, title) { }
+        }
+      });
+    </script>
+
+  </body>
+</html>

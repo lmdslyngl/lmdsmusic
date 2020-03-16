@@ -1,0 +1,151 @@
+
+body {
+  font-family: sans-serif;
+  background-color: rgb(250, 250, 250);
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+}
+
+.jumbotron {
+  background-size: cover;
+  background-position: center;
+  width: 100%;
+}
+
+.profile {
+  margin: 40px 0px 40px 0px;
+  text-align: center;
+  font-size: 14px;
+  color: #ffffff;
+}
+
+.content {
+  display: flex;
+  justify-content: center;
+  flex-direction: row;
+  flex-wrap: wrap;
+  width: 640px
+}
+
+.profile img {
+  width: 250px;
+  height: 250px;
+}
+
+.btn-real {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 45px;
+  height: 45px;
+  border: none;
+  background-color: rgb(61, 74, 116);
+}
+.btn-real:active {
+  transform: translateX(1px) translateY(1px);
+}
+.btn-real:hover {
+  background-color: rgb(84, 100, 151);
+}
+
+.player {
+  display: grid;
+  grid-template-columns: 100px 1fr;
+  align-items: center;
+  gap: 0px;
+  border-style: solid;
+  border-color: rgb(61, 74, 116);
+  border-width: 2px;
+  border-radius: 5px;
+  width: 600px;
+  background-color: #fafafa;
+}
+
+.player .thumbnail {
+  background-image: url("/moon-4606246_640.jpg");
+  background-size: cover;
+  width: 100px;
+  height: 100px
+}
+
+.player .grid-right {
+  display: grid;
+  grid-template-rows: 30px 1fr;
+  gap: 0px;
+}
+
+.player .music-title {
+  color: #444455;
+  text-decoration: none;
+  font-size: 17px;
+  border-style: none none solid none;
+  border-width: 1px 5px;
+  border-color: rgb(61, 74, 116);
+  margin: 0px 10px 0px 10px;
+  padding: 3px;
+}
+
+.player .playbtn-and-waveform {
+  display: grid;
+  grid-template-columns: 70px 1fr;
+  align-items: center;
+  gap: 0px;
+  margin: 5px 10px 5px 0px;
+}
+
+.player .playbtn-bg {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.player-list-item {
+  margin: 30px 10px;
+}
+
+.footer {
+  margin-top: auto;
+  padding: 20px;
+  background-color: rgb(29, 29, 29);
+  text-align: center;
+  color: rgb(180, 180, 180);
+  width: 100%;
+}
+
+.pager {
+  margin: 20px;
+  text-align: center;
+}
+
+.btn-pager {
+  /* width: 45px; */
+  height: 45px;
+  border: none;
+  background-color: rgb(61, 74, 116);
+  color: white;
+  font-size: 16px;
+}
+.btn-pager:active {
+  transform: translateX(1px) translateY(1px);
+}
+.btn-pager:hover {
+  background-color: rgb(84, 100, 151);
+}
+
+.music-description h1 {
+  color: #444455;
+  margin-bottom: 0px;
+  border-style: none none solid none;
+  border-width: 2px 5px;
+  border-color: rgb(61, 74, 116);
+}
+
+.music-description .artist {
+  color: #444455;
+  text-align: right;
+  margin-top: 5px;
+}
