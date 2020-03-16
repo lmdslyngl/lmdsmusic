@@ -60,7 +60,7 @@ def generate_streams(
         output_streams_dir.mkdir(parents=True)
 
     for source in source_dir.glob("*.*"):
-        if source.name.tolower() not in ["mp3", "wav", "flac"]:
+        if source.suffix.lower() not in [".mp3", ".wav", ".flac"]:
             continue
 
         audio_id = md5(source.name.encode("utf-8")).hexdigest()
@@ -141,6 +141,9 @@ def generate_musicinfo_list(
     source_ids = set()
 
     for source in config.SOURCE_DIR.glob("*.*"):
+        if source.suffix.lower() not in [".mp3", ".wav", ".flac"]:
+            continue
+
         audio_id = md5(source.name.encode("utf-8")).hexdigest()
         source_ids.add(audio_id)
 

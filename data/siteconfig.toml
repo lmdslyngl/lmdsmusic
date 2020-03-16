@@ -1,0 +1,21 @@
+
+# ページタイトル
+title = "lmdsmusics"
+
+# プロフィールのサムネイル画像ファイル名
+profile_thumbnail = "profile-thumbnail.png"
+
+# プロフィールの背景画像ファイル名
+profile_background = "profile-background.jpg"
+
+# ユーザ名
+username = "らむだん（@dn_lmds_gl）"
+
+# ユーザ説明
+description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque a eleifend augue,"
+
+# ページ下部のコピーライト
+copyright = "らむだん(@dn_lmds_gl) 2020, All rights reserved."
+
+# デフォルトの曲サムネイル
+default_music_thumbnail = "music-thumbnail.jpg"

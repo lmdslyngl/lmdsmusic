@@ -101,29 +101,3 @@ def generate_waveform_graph(
     finally:
         temp_waveform_path.unlink()
 
-
-def main():
-    generate_waveform_graph(
-        Path("D:\\Music\\OriginalMusic\\BeginningVillage_loop.flac"),
-        Path("waveform_playing.png"),
-        (230, 230, 230),
-        Path("waveform_played.png"),
-        (28, 32, 80))
-
-    # # wav_bytes = convert_to_wav_for_vis(
-    # #     Path("D:\\Music\\OriginalMusic\\BeginningVillage_loop.flac"))
-    # wav_bytes = _convert_to_wav_for_vis(
-    #     Path(r"D:\Music\OriginalMusic\BattleTheme7_loop.wav"))
-    # wav_array = _wav_to_ndarray(wav_bytes)
-    # downsampled = _downsample(wav_array, 50000, 256)
-    # _draw_graph(downsampled, "graph.png", (6, 1))
-    # _colorize_graph("graph.png", "colorized.png", (28, 33, 80))
-
-    return 0
-
-
-if __name__ == "__main__":
-    sys.exit(main())
-
-
-
