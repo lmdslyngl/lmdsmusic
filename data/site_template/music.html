@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
     <link rel="stylesheet" href="player-mobile.css" media="screen and (max-width: 479px)">
     <link rel="stylesheet" href="player-desktop.css" media="screen and (min-width: 480px)">
-    <title>lmdsmusics</title>
+    <title>${title}</title>
     <style>
       .profile-bg {
         background-image: url("${profile_background}");
@@ -17,8 +17,8 @@
     <div class="jumbotron profile-bg">
       <div class="profile">
         <img src="profile-thumbnail.png">
-        <h1>らむだん（@dn_lmds_gl）</h1>
-        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque a eleifend augue,</p>
+        <h1>${username}</h1>
+        <p>${description}</p>
       </div>
     </div>
     <div class="content">
@@ -35,7 +35,7 @@
       </div>
     </div>
     <div class="footer">
-      らむだん(@dn_lmds_gl) 2020, All rights reserved.
+      ${copyright}
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
