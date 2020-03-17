@@ -1,6 +1,6 @@
 
 # ページタイトル
-title = "lmdsmusics"
+title = "My awesome musics"
 
 # プロフィールのサムネイル画像ファイル名
 profile_thumbnail = "profile-thumbnail.png"
@@ -9,13 +9,13 @@ profile_thumbnail = "profile-thumbnail.png"
 profile_background = "profile-background.jpg"
 
 # ユーザ名
-username = "らむだん（@dn_lmds_gl）"
+username = "My name is ..."
 
 # ユーザ説明
-description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque a eleifend augue,"
+description = "This is description of site."
 
 # ページ下部のコピーライト
-copyright = "らむだん(@dn_lmds_gl) 2020, All rights reserved."
+copyright = "Copyright 2020 My name."
 
 # デフォルトの曲サムネイル
 default_music_thumbnail = "music-thumbnail.jpg"
