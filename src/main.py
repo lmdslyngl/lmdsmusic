@@ -13,17 +13,7 @@ import config
 from hls_generator import generate_hls
 from waveform_generator import generate_waveform_graph
 from musictag.tagloader import MusicMetadata
-
-
-def replace_content(path: Path, replace_texts: List[Tuple[str, str]]):
-    with open(path, "r", encoding="utf-8") as f:
-        content = f.read()
-
-    for before, after in replace_texts:
-        content = content.replace(before, after)
-
-    with open(path, "w", encoding="utf-8") as f:
-        f.write(content)
+from util import replace_content, init_logger
 
 
 def load_siteconfig(siteconfig_path: Path) -> dict:
