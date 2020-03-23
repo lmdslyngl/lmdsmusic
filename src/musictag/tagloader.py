@@ -26,7 +26,6 @@ class MusicMetadata(NamedTuple):
 
         for loader in loader_funcs:
             try:
-                raise TagLoaderException("test exception")
                 return MusicMetadata(**loader(file_path))
             except TagLoaderException:
                 tagloader_exceptions.append(traceback.format_exc())
