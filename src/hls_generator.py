@@ -1,8 +1,10 @@
 
 from pathlib import Path
 import subprocess
+from logging import getLogger
 
 from config import FFMPEG_PATH
+from util import decode_subprocess_stream
 
 
 def generate_hls(
@@ -17,4 +19,17 @@ def generate_hls(
         4,
         output_audio_path,
         output_m3u8_path)
-    subprocess.run(cmd, check=True)
+
+    proc = subprocess.run(
+        cmd,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE)
+
+    logger = getLogger(__name__)
+    logger.debug("ffmpeg stdout={}".format(decode_subprocess_stream(proc.stdout)))
+    logger.debug("ffmpeg stderr={}".format(decode_subprocess_stream(proc.stderr)))
+    logger.debug("ffmpeg returncode={}".format(proc.returncode))
+
+    proc.check_returncode()
+
+

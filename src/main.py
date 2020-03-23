@@ -8,6 +8,7 @@ import toml
 import shutil
 from pathlib import Path
 from distutils.dir_util import copy_tree
+from logging import getLogger
 
 import config
 from hls_generator import generate_hls
@@ -52,6 +53,8 @@ def generate_streams(
     for source in source_dir.glob("*.*"):
         if source.suffix.lower() not in [".mp3", ".wav", ".flac"]:
             continue
+
+        getLogger(__name__).info("Generating streams: {}".format(source))
 
         audio_id = md5(source.name.encode("utf-8")).hexdigest()
 
@@ -166,30 +169,45 @@ def generate_musicinfo_list(
 
 
 def main():
-    siteconfig = load_siteconfig(config.DATA_DIR / Path("siteconfig.toml"))
+    init_logger()
+    logger = getLogger(__name__)
+    logger.info("Started site generator script.")
 
-    musicinfo_list = generate_musicinfo_list(
-        config.SOURCE_DIR,
-        siteconfig["default_music_thumbnail"],
-        config.DATA_DIR / Path("musicinfo_list.toml"))
+    try:
+        siteconfig = load_siteconfig(config.DATA_DIR / Path("siteconfig.toml"))
 
-    generate_streams(
-        config.SOURCE_DIR,
-        musicinfo_list,
-        config.STREAM_DIR)
+        logger.info("Generating musicinfo list")
+        musicinfo_list = generate_musicinfo_list(
+            config.SOURCE_DIR,
+            siteconfig["default_music_thumbnail"],
+            config.DATA_DIR / Path("musicinfo_list.toml"))
 
-    generate_music_list(
-        musicinfo_list,
-        config.STREAM_DIR / Path("musiclist.json"))
+        logger.info("Generating streams")
+        generate_streams(
+            config.SOURCE_DIR,
+            musicinfo_list,
+            config.STREAM_DIR)
 
-    delete_unused_streams(
-        musicinfo_list,
-        config.STREAM_DIR)
+        logger.info("Generating musiclist")
+        generate_music_list(
+            musicinfo_list,
+            config.STREAM_DIR / Path("musiclist.json"))
 
-    generate_site(
-        config.SITE_TEMPLATE_DIR,
-        siteconfig,
-        config.GENERATED_SITE_DIR)
+        logger.info("Deleting unused streams")
+        delete_unused_streams(
+            musicinfo_list,
+            config.STREAM_DIR)
+
+        logger.info("Generating site")
+        generate_site(
+            config.SITE_TEMPLATE_DIR,
+            siteconfig,
+            config.GENERATED_SITE_DIR)
+
+    except Exception as e:
+        logger.exception(e)
+
+    logger.info("Finished site generator script.")
 
     return 0
 
