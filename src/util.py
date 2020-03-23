@@ -29,6 +29,10 @@ def replace_content(path: Path, replace_texts: List[Tuple[str, str]]):
         f.write(content)
 
 
+def is_music_file(filepath: Path) -> bool:
+    music_file_extensions = [".mp3", ".wav", ".flac"]
+    return filepath.suffix.lower() in music_file_extensions
+
 
 def init_logger() -> logging.Logger:
     logdir = DATA_DIR / Path("log")

@@ -14,7 +14,7 @@ import config
 from hls_generator import generate_hls
 from waveform_generator import generate_waveform_graph
 from musictag.tagloader import MusicMetadata
-from util import replace_content, init_logger
+from util import replace_content, init_logger, is_music_file
 
 
 def load_siteconfig(siteconfig_path: Path) -> dict:
@@ -51,7 +51,7 @@ def generate_streams(
         output_streams_dir.mkdir(parents=True)
 
     for source in source_dir.glob("*.*"):
-        if source.suffix.lower() not in [".mp3", ".wav", ".flac"]:
+        if not is_music_file(source):
             continue
 
         getLogger(__name__).info("Generating streams: {}".format(source))
@@ -134,7 +134,7 @@ def generate_musicinfo_list(
     source_ids = set()
 
     for source in config.SOURCE_DIR.glob("*.*"):
-        if source.suffix.lower() not in [".mp3", ".wav", ".flac"]:
+        if not is_music_file(source):
             continue
 
         audio_id = md5(source.name.encode("utf-8")).hexdigest()
