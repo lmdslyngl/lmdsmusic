@@ -42,17 +42,17 @@ def init_logger() -> logging.Logger:
     logger = logging.getLogger()
     logger.setLevel(logging.DEBUG)
 
-    formatter = logging.Formatter('%(asctime)s %(name)s %(levelname)s %(message)s')
-
     stream_stdout = logging.StreamHandler(sys.stdout)
-    stream_stdout.setFormatter(formatter)
+    stream_stdout.setFormatter(
+        logging.Formatter('%(asctime)s %(message)s'))
     stream_stdout.setLevel(logging.INFO)
 
     logfile_name = datetime.now().strftime("%Y-%m-%dT%H-%M-%S.log")
     stream_logfile = logging.FileHandler(
         logdir / Path(logfile_name),
         encoding="utf-8")
-    stream_logfile.setFormatter(formatter)
+    stream_logfile.setFormatter(
+        logging.Formatter('%(asctime)s %(name)s %(levelname)s %(message)s'))
     stream_logfile.setLevel(logging.DEBUG)
 
     logger.addHandler(stream_stdout)
