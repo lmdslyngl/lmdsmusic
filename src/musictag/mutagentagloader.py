@@ -1,6 +1,7 @@
 
 import os
 from typing import Dict
+from logging import getLogger
 import mutagen
 from mutagen.id3 import ID3
 from mutagen._vorbis import VCommentDict
@@ -35,6 +36,12 @@ def load(file_path) -> Dict[str, str]:
         # タグにタイトルが無かったときはファイル名で代用する
         filename = os.path.splitext(os.path.basename(file_path))[0]
         tag_dict["title"] = filename
+
+        info_message = (
+            "Fallbacking to title is filename, " +
+            "because failed to load tag in soundfile \"{}\"")
+        info_message = info_message.format(filename)
+        getLogger(__name__).info(info_message)
 
     return tag_dict
 
