@@ -13,4 +13,5 @@
 # 使い方
 - [基本的な使い方](doc/basic_usage.md)
 - [ページのカスタマイズ](doc/site_customize.md)
+- [各曲のカスタマイズ](doc/music_customize.md)
 
