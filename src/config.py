@@ -21,3 +21,9 @@ STREAM_DIR = GENERATED_SITE_DIR / Path("stream")
 
 # ffmpegへのパス
 FFMPEG_PATH = MY_DIR / Path("ffmpeg.exe")
+
+# ストリーミングに使用するのAACファイルのビットレート
+AAC_BITRATE = "256k"
+
+# HLSの分割秒数
+HLS_LENGTH = 3
