@@ -2,6 +2,7 @@
 from pathlib import Path
 import subprocess
 from logging import getLogger
+import traceback
 
 from config import FFMPEG_PATH, AAC_BITRATE, HLS_LENGTH
 from util import decode_subprocess_stream
@@ -25,10 +26,14 @@ def generate_hls(
 
     logger.debug("ffmpeg command={}".format(cmd))
 
-    proc = subprocess.run(
-        cmd,
-        stdout=subprocess.PIPE,
-        stderr=subprocess.PIPE)
+    try:
+        proc = subprocess.run(
+            cmd,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE)
+    except FileNotFoundError as e:
+        logger.info("Not found ffmpeg: {}. Please copy ffmpeg program to src folder.".format(FFMPEG_PATH))
+        raise
 
     logger.debug("ffmpeg stdout={}".format(decode_subprocess_stream(proc.stdout)))
     logger.debug("ffmpeg stderr={}".format(decode_subprocess_stream(proc.stderr)))
