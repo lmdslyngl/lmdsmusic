@@ -113,6 +113,7 @@ def delete_unused_streams(
     used_ids = {musicinfo["id"] for musicinfo in musicinfo_list}
     for stream_dir in streams_dir.glob("*"):
         if stream_dir.is_dir() and stream_dir.name not in used_ids:
+            getLogger(__name__).info("Deleted: {}".format(stream_dir))
             shutil.rmtree(stream_dir)
 
 
