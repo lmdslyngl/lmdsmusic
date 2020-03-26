@@ -42,6 +42,68 @@ def generate_site(
         replace_content(document_path, replace_texts)
 
 
+def update_music_info(
+        musicinfo_path: Path,
+        musicinfo_list: List[dict],
+        audio_id: str) -> None:
+
+    try:
+        musicinfo = next(filter(
+            lambda x: x["id"] == audio_id,
+            musicinfo_list))
+    except StopIteration:
+        musicinfo = None
+
+    musicinfo["playlistUrl"] = "/stream/{}/playlist.m3u8".format(audio_id)
+    musicinfo["waveformPlaying"] = "/stream/{}/waveform_playing.png".format(audio_id)
+    musicinfo["waveformPlayed"] = "/stream/{}/waveform_played.png".format(audio_id)
+
+    with open(musicinfo_path, "w") as f:
+        json.dump(musicinfo, f)
+
+
+def generate_stream(
+        source_path: Path,
+        musicinfo_list: List[dict],
+        output_streams_dir: Path) -> None:
+
+    if not is_music_file(source_path):
+        return
+
+    getLogger(__name__).info("Generating streams: {}".format(source_path))
+
+    audio_id = md5(source_path.name.encode("utf-8")).hexdigest()
+    stream_dir = output_streams_dir / Path(audio_id)
+
+    try:
+        if not stream_dir.exists():
+            # ストリー見ディレクトリが無かったときはストリームを生成する
+            stream_dir.mkdir()
+
+            generate_hls(
+                source_path,
+                stream_dir / Path("playlist.m3u8"),
+                stream_dir / Path("audio%03d.aac"))
+
+            generate_waveform_graph(
+                source_path,
+                stream_dir / Path("waveform_playing.png"),
+                (230, 230, 230),
+                stream_dir / Path("waveform_played.png"),
+                (28, 32, 80))
+
+        # ストリームディレクトリがあってもmusicinfoの更新は常に行う
+        update_music_info(
+            stream_dir / Path("musicinfo.json"),
+            musicinfo_list,
+            audio_id)
+
+    except Exception:
+        # ストリーム作成中に例外が発生したら，ストリームディレクトリを削除する
+        shutil.rmtree(stream_dir)
+        raise
+
+
 def generate_streams(
         source_dir: Path,
         musicinfo_list: List[dict],
@@ -51,44 +113,7 @@ def generate_streams(
         output_streams_dir.mkdir(parents=True)
 
     for source in source_dir.glob("*.*"):
-        if not is_music_file(source):
-            continue
-
-        getLogger(__name__).info("Generating streams: {}".format(source))
-
-        audio_id = md5(source.name.encode("utf-8")).hexdigest()
-
-        stream_dir = output_streams_dir / Path(audio_id)
-        if not stream_dir.exists():
-            # ストリー見ディレクトリが無かったときはストリームを生成する
-            stream_dir.mkdir()
-
-            generate_hls(
-                source,
-                stream_dir / Path("playlist.m3u8"),
-                stream_dir / Path("audio%03d.aac"))
-
-            generate_waveform_graph(
-                source,
-                stream_dir / Path("waveform_playing.png"),
-                (230, 230, 230),
-                stream_dir / Path("waveform_played.png"),
-                (28, 32, 80))
-
-        # ストリームディレクトリがあってもmusicinfoの更新は常に行う
-        try:
-            musicinfo = next(filter(
-                lambda x: x["id"] == audio_id,
-                musicinfo_list))
-        except StopIteration:
-            musicinfo = None
-
-        musicinfo["playlistUrl"] = "/stream/{}/playlist.m3u8".format(audio_id)
-        musicinfo["waveformPlaying"] = "/stream/{}/waveform_playing.png".format(audio_id)
-        musicinfo["waveformPlayed"] = "/stream/{}/waveform_played.png".format(audio_id)
-
-        with open(stream_dir / Path("musicinfo.json"), "w") as f:
-            json.dump(musicinfo, f)
+        generate_stream(source, musicinfo_list, output_streams_dir)
 
 
 def generate_music_list(
