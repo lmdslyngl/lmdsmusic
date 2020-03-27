@@ -6,6 +6,14 @@ Vue.component("waveform", {
     "time",
     "height"
   ],
+  data: function() {
+    return {
+      width: 0
+    };
+  },
+  mounted: function() {
+    this.width = document.getElementById("playing-waveform").clientWidth;
+  },
   computed: {
     widthFromTime: function() {
       return this.time * this.width;
@@ -16,16 +24,22 @@ Vue.component("waveform", {
         height: this.height + "px"
       };
     },
-    playedWaveImageStyles: function() {
+    playedWaveImageWrapperStyles: function() {
       return {
-        backgroundImage: `url("${this.playedWaveImage}")`,
-        backgroundSize: `
-          ${this.time < 0.001 ? 0.0 : (1.0 / this.time) * 100.0}%
-          ${this.height}px`,
         position: "absolute",
         top: "0px",
         left: "0px",
         width: (this.time * 100.0) + "%",
+        height: this.height + "px",
+        overflow: "hidden"
+      };
+    },
+    playedWaveImageStyles: function() {
+      return {
+        position: "relative",
+        top: "0px",
+        left: "0px",
+        width: this.width + "px",
         height: this.height + "px",
         zIndex: "1"
       };
@@ -53,8 +67,12 @@ Vue.component("waveform", {
   template: `
     <div v-on:click="onClick" v-bind:style="waveformWrapperStyles">
       <div
-        id="played-waveform"
-        v-bind:style="playedWaveImageStyles" />
+        v-bind:style="playedWaveImageWrapperStyles">
+        <img
+          id="played-waveform"
+          v-bind:src="playedWaveImage"
+          v-bind:style="playedWaveImageStyles" />
+      </div>
       <div
         id="playing-waveform"
         v-bind:style="playingWaveImageStyles" />
