@@ -367,7 +367,7 @@ Vue.component("player-list", {
     }
   },
   template: `
-    <div>
+    <div class="player-list">
       <player
         class="player-list-item"
         v-for="(music, index) in musicinfoUrls"

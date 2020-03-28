@@ -107,8 +107,14 @@ body {
   align-items: center;
 }
 
+.player-list {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
 .player-list-item {
-  margin: 30px 10px;
+  margin: 20px 10px;
 }
 
 .footer {
@@ -164,7 +170,7 @@ body {
   border-color: rgb(61, 74, 116);
   font-size: 20px;
   padding: 20px 5px 5px 10px;
-  margin: 0;
+  margin: 0px 0px 10px 0px;
 }
 
 .search-box .fas {
