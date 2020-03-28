@@ -224,6 +224,9 @@ Vue.component("player", {
           this.src = musicinfo["playlistUrl"];
           this.thumbnail = musicinfo["thumbnail"];
           this.$emit("musicinfo-loaded", this.indexInList, musicinfo);
+        }).catch((response) => {
+          console.log(response);
+          alert("Failed to load musicinfo: " + url);
         });
     },
     fetchMusicinfo: function(url) {
