@@ -179,3 +179,20 @@ body {
   border: none;
   background-color: unset;
 }
+
+.info-card {
+  display: flex;
+  align-items: center;
+  margin-top: 20px;
+  padding: 10px;
+  font-size: 23px;
+  color: rgb(61, 74, 116);
+  border-style: solid;
+  border-radius: 5px;;
+  border-width: 3px;
+  border-color: rgb(61, 74, 116);
+}
+
+.info-card .fas {
+  font-size: 150%;
+}
