@@ -439,3 +439,25 @@ Vue.component("pager", {
   `
 });
 
+Vue.component("search-box", {
+  data: function() {
+    return {
+      searchText: ""
+    };
+  },
+  watch: {
+    searchText: function(newText) {
+      this.$emit("updated-search-text", newText);
+    }
+  },
+  template: `
+    <div class="search-box">
+      <i class="fas fa-search"></i>
+      <input
+        type="text"
+        placeholder="曲名で検索"
+        v-model="searchText">
+    </div>
+  `
+});
+

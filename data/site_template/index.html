@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
     <link rel="stylesheet" href="player-mobile.css" media="screen and (max-width: 479px)">
     <link rel="stylesheet" href="player-desktop.css" media="screen and (min-width: 480px)">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css">
     <title>${title}</title>
     <style>
       .profile-bg {
@@ -23,12 +24,15 @@
     </div>
     <div class="content">
       <div id="app">
+        <search-box
+          v-on:updated-search-text="onSearchTextChanged">
+        </search-box>
         <player-list
           v-bind:musicinfo-urls="pagedMusics"
           v-on:started-playing-callback="startedPlayingCallback">
         </player-list>
         <pager
-          v-bind:musics="musics"
+          v-bind:musics="musicInfoUrls"
           musics-per-page="10"
           v-on:page-changed="onPageChanged">
         </pager>
@@ -47,16 +51,13 @@
         el: "#app",
         data: {
           musics: [],
-          pagedMusics: []
+          pagedMusics: [],
+          searchText: ""
         },
         mounted: function() {
           this.loadMusics()
             .then((musics) => {
-              let sortedMusics = musics.slice();
-              sortedMusics.sort((a, b) => {
-                return b[2] - a[2];
-              });
-              this.musics = sortedMusics.map(x => `/stream/${x[0]}/musicinfo.json`);
+              this.musics = musics;
             }).catch((response) => {
               console.log(response);
             });
@@ -80,7 +81,37 @@
             this.pagedMusics = pagedMusics;
             scrollTo(0, 0);
           },
+          onSearchTextChanged: function(text) {
+            this.searchText = text;
+          },
           startedPlayingCallback: function(id, title) { }
+        },
+        computed: {
+          sortedMusics: function() {
+            let sortedMusics = this.musics.slice();
+            sortedMusics.sort((a, b) => {
+              return b[2] - a[2];
+            });
+            return sortedMusics;
+          },
+          searchedMusics: function() {
+            if( this.searchText.length <= 0 ) {
+              return this.sortedMusics;
+            }
+
+            let musicsFiltered = [];
+            for( let i = 0; i < this.sortedMusics.length; i++ ) {
+              let music = this.sortedMusics[i];
+              if( music[1].toUpperCase().indexOf(this.searchText.toUpperCase()) !== -1 ) {
+                musicsFiltered.push(music);
+              }
+            }
+            return musicsFiltered;
+
+          },
+          musicInfoUrls: function() {
+            return this.searchedMusics.map(x => `/stream/${x[0]}/musicinfo.json`);
+          }
         }
       });
     </script>
