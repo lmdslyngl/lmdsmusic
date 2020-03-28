@@ -48,6 +48,8 @@ body {
   height: 45px;
   border: none;
   background-color: rgb(61, 74, 116);
+  color: white;
+  font-size: 20px;
 }
 .btn-real:active {
   transform: translateX(1px) translateY(1px);

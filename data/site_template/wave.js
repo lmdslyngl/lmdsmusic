@@ -89,7 +89,8 @@ Vue.component("play-button", {
   },
   template: `
     <button class="btn-real" v-on:click="onClick">
-      <img v-bind:src="playing ? 'pause.svg' : 'play.svg'" style="width: 40px">
+      <i class="fas fa-play" v-if="!playing" />
+      <i class="fas fa-pause" v-if="playing" />
     </button>
   `
 });
