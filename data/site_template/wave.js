@@ -409,7 +409,7 @@ Vue.component("pager", {
   },
   computed: {
     maxPages: function() {
-      return Math.floor(this.musics.length / this.musicsPerPage);
+      return Math.ceil(this.musics.length / this.musicsPerPage) - 1;
     },
     pagedMusics: function() {
       let start = this.musicsPerPage * this.currentPage;
