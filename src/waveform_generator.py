@@ -47,7 +47,7 @@ def _draw_graph(
         graph_path: Path,
         size: Tuple[int, int]) -> None:
 
-    plt.figure(figsize=size, dpi=100)
+    fig = plt.figure(figsize=size, dpi=100)
     ax = plt.axes([0, 0, 1, 1], frameon=False)
     ax.get_xaxis().set_visible(False)
     ax.get_yaxis().set_visible(False)
@@ -55,6 +55,7 @@ def _draw_graph(
     plt.plot(array, linewidth=0.5, color="white")
     plt.autoscale(axis="x", tight=True)
     plt.savefig(graph_path, transparent=True)
+    plt.close(fig)
 
 
 def _colorize_graph(
