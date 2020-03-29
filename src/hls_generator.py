@@ -4,7 +4,7 @@ import subprocess
 from logging import getLogger
 import traceback
 
-from config import FFMPEG_PATH, AAC_BITRATE, HLS_LENGTH
+from config import FFMPEG_PATH, AAC_BITRATE, HLS_LENGTH, AAC_ENCODER
 from util import decode_subprocess_stream
 
 
@@ -15,10 +15,11 @@ def generate_hls(
 
     logger = getLogger(__name__)
 
-    cmd = "\"{}\" -i \"{}\" -acodec aac -ab {} -f hls -hls_time {} -hls_playlist_type vod -hls_segment_filename \"{}\" \"{}\""
+    cmd = "\"{}\" -i \"{}\" -acodec {} -ab {} -f hls -hls_time {} -hls_playlist_type vod -hls_segment_filename \"{}\" \"{}\""
     cmd = cmd.format(
         FFMPEG_PATH,
         input_audio_path,
+        AAC_ENCODER,
         AAC_BITRATE,
         HLS_LENGTH,
         output_audio_path,
